@@ -10,17 +10,14 @@ class Ligne extends React.Component{
         const dataReturn = [];
     
         for (let ind= 1;ind<=this.props.colonne;ind++){
-            
-
-            if (this.props.ligneList[ind-1]){
-                dataReturn.push(<Case 
+        
+            dataReturn.push(<Case 
                     key={ind+this.props.ligne*8} 
                     value={this.props.ligneList[ind-1]} 
                     onClick={()=>this.props.func(this.props.ligne,ind)}
-                />)
-            } else {
-                dataReturn.push(<Case key={ind+this.props.ligne*8} value={this.props.ligneList[ind-1]}/>)
-            }
+            />)
+            
+            
         }
 
         return [
