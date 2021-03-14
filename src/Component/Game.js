@@ -37,9 +37,10 @@ class Game extends React.Component {
 
     //Quand est ce qu'on peut cliquer sur la premiere pos
 
-    setFirstPosOfGame(x,y) {
-        this.setState({firstPos:[1,2]});
-        console.log(x);
+    setFirstPos(x,y) {
+        
+        console.log(x,y);
+        console.log(this.state);
     }
 
     render(){
@@ -50,7 +51,7 @@ class Game extends React.Component {
                 colonne={this.state.colonne} 
                 ligne={ind} 
                 ligneList={this.state.etat[ind-1]}
-                func ={()=>this.setFirstPosOfGame()}
+                func ={this.setFirstPos}
             />);
         }
 
