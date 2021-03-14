@@ -3,7 +3,12 @@ import Case from './Case';
 
 class Ligne extends React.Component{
 
-    
+    constructor(props){
+        super(props);
+        this.state={
+            test: this.props.func,
+        }
+    }
 
     render(){
         
@@ -19,7 +24,7 @@ class Ligne extends React.Component{
             
             
         }
-
+        
         return [
             <tr key={this.props.ligne}>
                 {dataReturn}
