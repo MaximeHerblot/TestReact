@@ -1,5 +1,7 @@
 import React from 'react';
 import Ligne from './Ligne';
+
+
 class Game extends React.Component {
 
     constructor(props){
@@ -20,33 +22,62 @@ class Game extends React.Component {
         this.state= {
             colonne: this.props.colonne,
             ligne: this.props.ligne,
-            whiteIsNext: true, 
+            whiteTurn: true, 
             etat: list,
             firstPos : null,
-            secondPos : null,
+            
         }
     }
 
-    move(firstPos,secondPos){
+    move(x,y){
+        this.setState({
+            secondPos:[x,y],
+        });
+
         const list = this.state.etat.slice();
-        list[firstPos[0]][firstPos[1]]=null;
-        list[secondPos[0]][secondPos[1]]="B";
+        list[this.state.firstPos[0]-1][this.state.firstPos[1]-1]=null;
+        list[x-1][y-1]= this.state.whiteTurn? "W" : "B";
         
-        this.setState({ etat: list});
+        this.setState({ etat: list, firstPos:null, secondPos:null,whiteTurn: this.state.whiteTurn ? false: true});
+
     }
 
     //Quand est ce qu'on peut cliquer sur la premiere pos
 
+    changeTurn(){
+        this.setState({
+            whiteTurn: !this.state.whiteTurn,
+        })
+    }    
+
+    handleClick(x,y){
+        if (this.state.firstPos===null){
+            this.setFirstPos(x,y);
+        } else {
+            this.move(x,y);
+        }
+    }
+
     setFirstPos(x,y) {
-        if (this.state.etat[x-1][y-1]!=null){
+        let turnColor;
+        if (this.state.whiteTurn ===true){
+            turnColor = "W";
+        } else{
+            turnColor = "B";
+        }
+        
+        if (this.state.etat[x-1][y-1]===(turnColor)){
             this.setState({
                 firstPos:[x,y],
             })
         }
         
     }
+    
+    
 
     render(){
+        
         const dataReturn = [];
         for (let ind= 1;ind<=this.state.ligne;ind++){
             dataReturn.push(<Ligne 
@@ -54,12 +85,15 @@ class Game extends React.Component {
                 colonne={this.state.colonne} 
                 ligne={ind} 
                 ligneList={this.state.etat[ind-1]}
-                func ={this.setFirstPos.bind(this)}
+                func ={this.handleClick.bind(this)}
             />);
         }
-        console.log(this.state)
         return [
-            <table key={1} >
+            <p key={1}>
+                Turn : {this.state.whiteTurn ? "White" : "Black"}
+            </p>
+            ,
+            <table key={2} >
                 <tbody>
                     {dataReturn}
                 </tbody>
