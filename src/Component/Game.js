@@ -33,10 +33,9 @@ class Game extends React.Component {
         this.setState({
             secondPos:[x,y],
         });
-
         const list = this.state.etat.slice();
-        list[this.state.firstPos[0]-1][this.state.firstPos[1]-1]=null;
-        list[x-1][y-1]= this.state.whiteTurn? "W" : "B";
+        list[this.state.firstPos[0]][this.state.firstPos[1]]=null;
+        list[x][y]= this.state.whiteTurn? "W" : "B";
         
         this.setState({ etat: list, firstPos:null, secondPos:null,whiteTurn: this.state.whiteTurn ? false: true});
 
@@ -66,7 +65,7 @@ class Game extends React.Component {
             turnColor = "B";
         }
         
-        if (this.state.etat[x-1][y-1]===(turnColor)){
+        if (this.state.etat[x][y]===(turnColor)){
             this.setState({
                 firstPos:[x,y],
             })
@@ -79,12 +78,12 @@ class Game extends React.Component {
     render(){
         
         const dataReturn = [];
-        for (let ind= 1;ind<=this.state.ligne;ind++){
+        for (let ind=0;ind<this.state.ligne;ind++){
             dataReturn.push(<Ligne 
                 key={ind} 
                 colonne={this.state.colonne} 
                 ligne={ind} 
-                ligneList={this.state.etat[ind-1]}
+                ligneList={this.state.etat[ind]}
                 func ={this.handleClick.bind(this)}
             />);
         }
