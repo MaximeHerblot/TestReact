@@ -8,24 +8,45 @@ class Game extends React.Component {
         
         super(props);
 
-        let list = Array(this.props.ligne).fill(Array(this.props.colonne).fill(null).slice());
-        list[0] = [null,"B",null,"B",null,"B",null,"B",null,"B"];
-        list[1] = ["B",null,"B",null,"B",null,"B",null,"B",null];
+        let etatPartie = Array(this.props.ligne).fill(Array(this.props.colonne).fill(null).slice());
+        etatPartie[0] = [null,"B",null,"B",null,"B",null,"B",null,"B"];
+        etatPartie[1] = ["B",null,"B",null,"B",null,"B",null,"B",null];
 
         for (let index = 2; index <= this.props.ligne-2; index++) {
-            list[index] = [null,null,null,null,null,null,null,null,null,null]
+            etatPartie[index] = [null,null,null,null,null,null,null,null,null,null]
             
         }
 
-        list[this.props.ligne-2] = [null,"W",null,"W",null,"W",null,"W",null,"W"];
-        list[this.props.ligne-1] = ["W",null,"W",null,"W",null,"W",null,"W",null];
+        etatPartie[this.props.ligne-2] = [null,"W",null,"W",null,"W",null,"W",null,"W"];
+        etatPartie[this.props.ligne-1] = ["W",null,"W",null,"W",null,"W",null,"W",null];
+        const listEtatPion = [];
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                let obj;
+                if ( ( ((i%2===0) && (j%2===1)) || ((i%2===1) && (j%2===0)) ) && (i<2) ){
+                    
+                    const json = `{"pos":[${i},${j}],"color" : "W", "avancement" : "haut"}`;
+                    obj = JSON.parse(json);
+                    listEtatPion.push(obj);
+                } else if ( ( ((i%2===0) && (j%2===1)) || ((i%2===1) && (j%2===0)) ) && (i>7) ){
+                    const json = `{"pos":[${i},${j}],"color" : "B", "avancement" : "bas"}`;
+                    obj = JSON.parse(json);
+                    listEtatPion.push(obj);
+                }
+                
+            }
+            
+        }
+        console.log(listEtatPion);
+        
+
         this.state= {
             colonne: this.props.colonne,
             ligne: this.props.ligne,
             whiteTurn: true, 
-            etat: list,
+            etat: etatPartie,
             firstPos : null,
-            
+            etatPion : listEtatPion,
         }
     }
 
@@ -36,7 +57,7 @@ class Game extends React.Component {
         const list = this.state.etat.slice();
         list[this.state.firstPos[0]][this.state.firstPos[1]]=null;
         list[x][y]= this.state.whiteTurn? "W" : "B";
-        
+
         this.setState({ etat: list, firstPos:null, secondPos:null,whiteTurn: this.state.whiteTurn ? false: true});
 
     }
@@ -73,10 +94,34 @@ class Game extends React.Component {
         
     }
     
-    
+    getListPion(color){
+        const listPion=[];
+        this.state.etat.forEach((ligne,ligneKey) => {
+            ligne.forEach((colonne,colonneKey) => {
+                if (colonne===color){
+                    listPion.push([ligneKey,colonneKey]);
+                }
+            });
+        });
+        return listPion;
+    }
 
+    whichCaseClickable(){
+        let listPion = [];
+        if (this.state.whiteTurn){
+            listPion = this.getListPion("W");
+        } else {
+            listPion = this.getListPion("B");
+        }
+        listPion.forEach((pos) => {
+            
+        });
+        console.log(listPion);
+    }
+
+    getDirection
     render(){
-        
+        this.whichCaseClickable();
         const dataReturn = [];
         for (let ind=0;ind<this.state.ligne;ind++){
             dataReturn.push(<Ligne 
