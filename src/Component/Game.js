@@ -25,11 +25,11 @@ class Game extends React.Component {
                 let obj;
                 if ( ( ((i%2===0) && (j%2===1)) || ((i%2===1) && (j%2===0)) ) && (i<2) ){
                     
-                    const json = `{"pos":[${i},${j}],"color" : "W", "avancement" : "haut"}`;
+                    const json = `{"posX":${i},"posY":${j},"color" : "W", "avancement" : "haut"}`;
                     obj = JSON.parse(json);
                     listEtatPion.push(obj);
                 } else if ( ( ((i%2===0) && (j%2===1)) || ((i%2===1) && (j%2===0)) ) && (i>7) ){
-                    const json = `{"pos":[${i},${j}],"color" : "B", "avancement" : "bas"}`;
+                    const json = `{"posX":${i},"posY":${j},"color" : "B", "avancement" : "bas"}`;
                     obj = JSON.parse(json);
                     listEtatPion.push(obj);
                 }
@@ -37,7 +37,6 @@ class Game extends React.Component {
             }
             
         }
-        console.log(listEtatPion);
         
 
         this.state= {
@@ -113,10 +112,13 @@ class Game extends React.Component {
         } else {
             listPion = this.getListPion("B");
         }
+        
+        const listEtat = this.state.etat.slice();
+       
         listPion.forEach((pos) => {
-            
+            //Récup de la direction du pion
+            console.log(pos);
         });
-        console.log(listPion);
     }
 
     getDirection
